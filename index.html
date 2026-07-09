@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tailstock — Supporting deep-cutting bare metal research</title>
+  <meta
+    name="description"
+    content="Tailstock — supporting deep-cutting bare metal research."
+  />
+  <link rel="preload" href="assets/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 1-bit dithered flowing background -->
+  <canvas id="dither" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="stage">
+    <header class="brand">
+      <img class="brand__logo" src="assets/logo.svg" alt="Tailstock logo" />
+    </header>
+
+    <p class="tagline">
+      <span class="tagline__line">Supporting deep-cutting</span>
+      <span class="tagline__line">bare&nbsp;metal research</span>
+    </p>
+
+    <section class="about" id="about" aria-label="About">
+      <h2 class="about__heading">
+        <span class="about__prompt">&gt;</span> about
+        <span class="cursor" aria-hidden="true"></span>
+      </h2>
+      <p class="about__body">
+        <!-- TODO: fill this out. Placeholder copy below. -->
+        Tailstock builds and supports research at the lowest layers of the
+        stack — firmware, silicon, and the bare metal in between.
+      </p>
+    </section>
+
+    <footer class="foot">
+      <span class="foot__dot" aria-hidden="true"></span>
+      <span>© <span id="year"></span> Tailstock</span>
+      <a class="foot__contact" href="mailto:contact@tailstock.io">contact@tailstock.io</a>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
