@@ -29,6 +29,13 @@
   --edge: rgba(244, 244, 244, 0.18);
   --pad: clamp(1.25rem, 4vw, 4rem);
   --about-w: 46ch;      /* About box width — logo is derived from this */
+  --gap: clamp(1.5rem, 4vh, 3rem);   /* vertical rhythm between stage blocks */
+  /* always ~2/3 the width of the About box (never overflow narrow screens) */
+  --logo-w: min(calc(var(--about-w) * 2 / 3), 90vw);
+  --tick: 8px;          /* height of the center-mark strip (fits the diamond) */
+  --tick-d: 5px;        /* diamond side; rotated 45deg its diagonal is ~7.1px */
+  --tick-gap: 2.25rem;  /* break in the rule the diamond sits in */
+  --rule-line: #8a8a8a; /* opaque so the hairline survives the dither */
 }
 
 * {
@@ -88,19 +95,49 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(1.5rem, 4vh, 3rem);
+  gap: var(--gap);
   padding: var(--pad);
   text-align: center;
 }
 
+/* A hairline broken by a centered diamond — a machinist's center mark.
+   The element itself draws the two rule segments; ::after is the diamond,
+   absolutely placed so it sits in the break between them. Colours are
+   opaque, not alpha, so they hold up where the dither flips to white. */
+.rule {
+  position: relative;
+  width: var(--logo-w);
+  height: var(--tick);
+  background:
+    linear-gradient(var(--rule-line), var(--rule-line)) left center / calc(50% - var(--tick-gap) / 2) 1px no-repeat,
+    linear-gradient(var(--rule-line), var(--rule-line)) right center / calc(50% - var(--tick-gap) / 2) 1px no-repeat;
+  filter: drop-shadow(0 0 1px #000);
+  animation: rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.rule::after {
+  content: "";
+  position: absolute;
+  top: calc((var(--tick) - var(--tick-d)) / 2);
+  left: 50%;
+  width: var(--tick-d);
+  height: var(--tick-d);
+  transform: translateX(-50%) rotate(45deg);
+  background: var(--ink);
+  /* thin black edge, the same trick the logo and text use over the dither */
+  box-shadow: 0 0 0 1px #000;
+}
+
+/* stagger each rule to land just after the block it follows */
+.brand + .rule   { animation-delay: 0.08s; }
+.tagline + .rule { animation-delay: 0.22s; }
+
 .brand__logo {
-  /* always ~2/3 the width of the About box (never overflow narrow screens) */
-  width: min(calc(var(--about-w) * 2 / 3), 90vw);
+  width: var(--logo-w);
   height: auto;
   display: block;
-  /* tight black tile — thin edge keeps it defined over dark dither,
-     drop shadow lifts it off the flowing background */
-  border: 1px solid var(--edge);
+  /* transparent mark — the black outline on each line keeps it defined
+     over the dither, drop shadow lifts it off the flowing background */
   filter: drop-shadow(0 10px 34px rgba(0, 0, 0, 0.7));
   animation: rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
